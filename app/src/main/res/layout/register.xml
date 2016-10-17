@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <scau.com.lifeappclient.view.RoundedImageView
+        android:layout_marginTop="50dp"
+        android:id="@+id/avator"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/header_image"
+        android:layout_width="120dp"
+        android:layout_height="120dp" />
+    <EditText
+        android:id="@+id/account"
+        android:hint="输入账号"
+        android:inputType="text"
+        android:singleLine="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+    <EditText
+        android:id="@+id/pwd1"
+        android:inputType="textPassword"
+        android:hint="输入密码"
+        android:singleLine="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+    <EditText
+        android:id="@+id/pwd2"
+        android:inputType="textPassword"
+        android:hint="再次输入密码"
+        android:singleLine="true"
+        android:layout_marginTop="20dp"
+        android:imeOptions="actionSend"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+    <Button
+        android:id="@+id/register"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textColor="@android:color/white"
+        android:background="#75f575"
+        android:text="注册"
+        android:textSize="@dimen/text_20"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+</LinearLayout>

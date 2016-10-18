@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import scau.com.lifeappclient.activity.LoginActivity;
+import scau.com.lifeappclient.utils.SoftInputUtils;
 
 public class MainActivity extends AppCompatActivity {
 

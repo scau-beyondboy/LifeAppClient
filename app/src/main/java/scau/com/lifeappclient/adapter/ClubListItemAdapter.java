@@ -8,10 +8,13 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import net.neevek.android.lib.paginize.PageActivity;
+
 import java.util.List;
 
 import scau.com.lifeappclient.R;
 import scau.com.lifeappclient.model.ClubInfo;
+import scau.com.lifeappclient.page.ClubWebSitePage;
 import scau.com.lifeappclient.utils.OkHttpNetWorkUtil;
 
 /**
@@ -42,6 +45,12 @@ public class ClubListItemAdapter extends RecyclerView.Adapter<ClubListItemAdapte
         holder.clubName.setText(clubInfo.getClubName());
         holder.clubDesc.setText(clubInfo.getClubDesc());
         holder.clubWexXinNum.setText(clubInfo.getClubWeixinNum());
+        holder.clubHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new ClubWebSitePage((PageActivity) v.getContext()).onShown("http://su.scau.edu.cn/").show(true);
+            }
+        });
     }
 
     @Override

@@ -14,7 +14,7 @@ import net.neevek.android.lib.paginize.PageActivity;
  * Created by beyondboy on 2016/10/17.
  */
 public class SoftInputUtils {
-    public static void hideSofeInput(final PageActivity context){
+    public static void hideSofeInput(final Activity context){
         View view = context.getCurrentFocus();
         if (view != null) {
             InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);

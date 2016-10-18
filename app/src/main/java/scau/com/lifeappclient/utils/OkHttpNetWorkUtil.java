@@ -2,13 +2,16 @@ package scau.com.lifeappclient.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.IntegerRes;
 import android.support.v4.util.ArrayMap;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.internal.$Gson$Types;
@@ -38,6 +41,8 @@ import java.net.URLConnection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+
+import scau.com.lifeappclient.R;
 
 /**
  * Author:beyondboy
@@ -200,9 +205,14 @@ public class OkHttpNetWorkUtil
      */
     public static void displayImage(final ImageView view, String url)
     {
-        getInstance()._displayImage(view, url, -1);
+        getInstance()._displayImage(view, url, R.drawable.download_default_image);
     }
 
+    public static void displaySimpleImage(final SimpleDraweeView imageView, String url)
+    {
+        Uri uri = Uri.parse(url);
+        imageView.setImageURI(uri);
+    }
     /**
      * @see #_downloadAsyn(String, String, ResultCallback)
      */
@@ -443,7 +453,7 @@ public class OkHttpNetWorkUtil
      * @param url 图片地址
      * @param errorResId 错误图片资源Id
      */
-    private void _displayImage(final ImageView view, final String url, @IntegerRes final int errorResId)
+    private void _displayImage(final ImageView view, final String url, @DrawableRes final int errorResId)
     {
         final Request request = new Request.Builder()
                 .url(url)
@@ -472,6 +482,7 @@ public class OkHttpNetWorkUtil
                         is.reset();
                     } catch (IOException e)
                     {
+                        e.printStackTrace();
                         response = _get(url);
                         is = response.body().byteStream();
                     }
@@ -489,8 +500,8 @@ public class OkHttpNetWorkUtil
                     });
                 } catch (Exception e)
                 {
+                    e.printStackTrace();
                     setErrorResId(view, errorResId);
-
                 } finally
                 {
                     if (is != null) try

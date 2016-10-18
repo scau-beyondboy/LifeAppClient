@@ -2,6 +2,8 @@ package scau.com.lifeappclient;
 
 import android.app.Application;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+
 import scau.com.lifeappclient.manager.ThreadManager;
 
 
@@ -36,5 +38,6 @@ public class MyApplication extends Application
     {
         super.onCreate();
         sMyApplication=this;
+        Fresco.initialize(this);
     }
 }

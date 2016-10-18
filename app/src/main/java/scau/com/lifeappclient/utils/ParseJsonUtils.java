@@ -58,6 +58,25 @@ public class ParseJsonUtils
         }
     }
 
+    public static <T> T parseDataJson(ResponseObject<Object> responseObject,Class<T> classOfT,final boolean isShowMsg)
+    {
+        Gson gson=new Gson();
+        String data=gson.toJson(responseObject.getData());
+        if(!StringUtils.isEmpty(responseObject.getMsg())&&isShowMsg){
+            ToaskUtils.showToast(responseObject.getMsg());
+        }
+        if(responseObject.getCode()== NetWorkConstants.SUCCESS_CODE)
+        {
+            return  gson.fromJson(data,classOfT);
+        }
+        else
+        {
+//            if(!StringUtils.isEmpty(responseObject.getMsg())){
+//                ToaskUtils.showToast(responseObject.getMsg());
+//            }
+            return null;
+        }
+    }
     /**返回list集合*/
     public static <T> List<T> paresListDataJson(ResponseObject<Object> responseObject,Type type)
     {

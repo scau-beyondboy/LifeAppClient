@@ -6,6 +6,7 @@ import net.neevek.android.lib.paginize.PageActivity;
 import net.neevek.android.lib.paginize.anim.SlidePageAnimator;
 import net.neevek.android.lib.paginize.annotation.InjectPageAnimator;
 
+import scau.com.lifeappclient.page.ClubPage;
 import scau.com.lifeappclient.page.LoginPage;
 
 /**
@@ -17,7 +18,8 @@ public class LoginActivity extends PageActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(savedInstanceState==null){
-            new LoginPage(this).show(false);
+            //new LoginPage(this).show(false);
+            new ClubPage(this).show(false);
         }
     }
 }

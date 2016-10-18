@@ -60,6 +60,11 @@ public final class NetWorkHandlerUtils
     {
         void fail();
     }
+    public interface PostCallback<T>
+    {
+        void success(T result);
+        void fail(Exception e);
+    }
     /**post异步处理*/
     public static<T> void postAsynHandler(String url, Map<String, String> params, final String successMessage,final String failMessage,final PostSuccessCallback postSuccessCallback, final Class<T> tClass)
     {
@@ -173,4 +178,33 @@ public final class NetWorkHandlerUtils
         });
     }
 
+    /**post异步处理*/
+    public static<T> void postAsynHandler(String url, Map<String, String> params, final PostCallback postCallback, final Class<T> tClass)
+    {
+        if(!NetworkUtils.isNetworkReachable())
+        {
+            ToaskUtils.showToast("没有网络");
+            return;
+        }
+        OkHttpNetWorkUtil.postAsyn(url, new OkHttpNetWorkUtil.ResultCallback<ResponseObject<Object>>()
+        {
+            @Override
+            public void onError(Request request, Exception e)
+            {
+                if(postCallback!=null){
+                    postCallback.fail(e);
+                }
+            }
+
+            @Override
+            public void onResponse(ResponseObject<Object> response)
+            {
+                T result=ParseJsonUtils.parseDataJson(response,tClass,false);
+                if(result!=null&& postCallback !=null)
+                {
+                    postCallback.success(result);
+                }
+            }
+        }, params);
+    }
 }

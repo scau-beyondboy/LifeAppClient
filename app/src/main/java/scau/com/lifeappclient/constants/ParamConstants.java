@@ -10,4 +10,6 @@ public class ParamConstants {
     public static final String USE_SEX="userSex";
     public static final String PWD="password";
     public static final String NICK="nickname";
+    public static final String PAGEACCOUNT="pageaccount";
+    public static final String PAGESIZE="pagesize";
 }

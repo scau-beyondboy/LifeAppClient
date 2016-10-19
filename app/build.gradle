@@ -31,4 +31,5 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:24.2.1'
     compile 'com.facebook.fresco:fresco:0.14.1'
     compile 'me.wangyuwei:LoadingiVew:1.0.5'
+    compile 'me.relex:photodraweeview:1.1.2'
 }

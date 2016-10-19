@@ -1,5 +1,6 @@
 package scau.com.lifeappclient.page;
 
+import android.os.Handler;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import net.neevek.android.lib.paginize.Page;
@@ -17,6 +19,7 @@ import net.neevek.android.lib.paginize.annotation.PageLayout;
 
 import java.util.List;
 
+import me.wangyuwei.loadingview.LoadingView;
 import scau.com.lifeappclient.R;
 import scau.com.lifeappclient.adapter.ClubListItemAdapter;
 import scau.com.lifeappclient.constants.NetWorkConstants;
@@ -41,7 +44,9 @@ public class ClubPage extends Page  implements SwipeRefreshLayout.OnRefreshListe
     @InjectView(R.id.recy_list)
     private RecyclerView mClubReycleView;
     @InjectView(value = R.id.empty_view,listenerTypes = View.OnClickListener.class)
-    private TextView mTvEmpty;
+    private ImageView mTvEmpty;
+    @InjectView(R.id.progress)
+    private LoadingView mLoadingView;
     private boolean isLoading=false;
 
     public ClubPage(PageActivity pageActivity) {
@@ -63,7 +68,15 @@ public class ClubPage extends Page  implements SwipeRefreshLayout.OnRefreshListe
                     int totalItemCount = linearLayoutManager.getItemCount();
                     int lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
                     if (!isLoading && totalItemCount <= lastVisibleItem+visibleThreshold ) {
-                        loadData();
+                        new  Handler().post(new Runnable() {
+                            @Override
+                            public void run() {
+                                final ClubListItemAdapter clubListItemAdapter=(ClubListItemAdapter) mClubReycleView.getAdapter();
+                                //  clubListItemAdapter.addOneData(new ClubInfo(ClubListItemAdapter.VIEW_TYPE_LOADING));
+                                clubListItemAdapter.addOneData(null);
+                                loadData();
+                            }
+                        });
                     }
                 }
             });
@@ -71,16 +84,20 @@ public class ClubPage extends Page  implements SwipeRefreshLayout.OnRefreshListe
         }
         params.put(ParamConstants.PAGEACCOUNT,pageAccount);
         params.put(ParamConstants.PAGESIZE,pageSize);
+        mLoadingView.start();
         isLoading=true;
         NetWorkHandlerUtils.postAsynHandler(NetWorkConstants.GET_CLUB_INFO,params,new NetWorkHandlerUtils.PostCallback<ClubPageInfo>(){
 
             @Override
             public void success(ClubPageInfo result) {
                 isLoading=false;
+                mLoadingView.stop();
                 List<ClubInfo> clubInfoList=result.getClubInfoList();
                 if(clubInfoList==null||clubInfoList.size()==0){
-                    mRefreshLayout.setVisibility(View.GONE);
-                    mTvEmpty.setText("没有数据");
+                    mTvEmpty.setImageResource(R.drawable.not_data);
+                    if(mClubReycleView.getAdapter().getItemCount()>0){
+                        mRefreshLayout.setVisibility(View.VISIBLE);
+                    }
                     mTvEmpty.setVisibility(View.VISIBLE);
                 }else{
                     pageAccount=Integer.valueOf(pageAccount)+1+"";
@@ -94,9 +111,10 @@ public class ClubPage extends Page  implements SwipeRefreshLayout.OnRefreshListe
             @Override
             public void fail(Exception e) {
                 e.printStackTrace();
+                mLoadingView.stop();
                 isLoading=false;
+                mTvEmpty.setImageResource(R.drawable.load_error);
                 mRefreshLayout.setVisibility(View.GONE);
-                mTvEmpty.setText("请求出错\n点击重试");
                 mTvEmpty.setVisibility(View.VISIBLE);
             }
         },ClubPageInfo.class);
@@ -112,6 +130,7 @@ public class ClubPage extends Page  implements SwipeRefreshLayout.OnRefreshListe
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.empty_view:
+                mTvEmpty.setVisibility(View.GONE);
                 init();
                 break;
         }
@@ -124,6 +143,7 @@ public class ClubPage extends Page  implements SwipeRefreshLayout.OnRefreshListe
             @Override
             public void success(ClubPageInfo result) {
                 isLoading=false;
+                ((ClubListItemAdapter)mClubReycleView.getAdapter()).removeOneData();
                 mRefreshLayout.setRefreshing(false);
                 List<ClubInfo> clubInfoList=result.getClubInfoList();
                 if(clubInfoList==null||clubInfoList.size()==0){
@@ -138,10 +158,11 @@ public class ClubPage extends Page  implements SwipeRefreshLayout.OnRefreshListe
             @Override
             public void fail(Exception e) {
                 isLoading=false;
+                ((ClubListItemAdapter)mClubReycleView.getAdapter()).removeOneData();
                 e.printStackTrace();
                 mRefreshLayout.setRefreshing(false);
                 mRefreshLayout.setVisibility(View.GONE);
-                mTvEmpty.setText("请求出错\n点击重试");
+                mTvEmpty.setImageResource(R.drawable.load_error);
                 mTvEmpty.setVisibility(View.VISIBLE);
             }
         },ClubPageInfo.class);

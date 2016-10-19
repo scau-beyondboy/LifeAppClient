@@ -60,6 +60,9 @@ public class ParseJsonUtils
 
     public static <T> T parseDataJson(ResponseObject<Object> responseObject,Class<T> classOfT,final boolean isShowMsg)
     {
+        if(responseObject==null||responseObject.getData()==null){
+            return null;
+        }
         Gson gson=new Gson();
         String data=gson.toJson(responseObject.getData());
         if(!StringUtils.isEmpty(responseObject.getMsg())&&isShowMsg){

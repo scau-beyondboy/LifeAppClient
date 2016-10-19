@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:lv="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="80dp">
+    <me.wangyuwei.loadingview.LoadingView
+        android:layout_gravity="center"
+        android:id="@+id/bottom_progress"
+        android:layout_width="match_parent"
+        lv:lv_duration="2"
+        lv:lv_start_color="#2eea24"
+        lv:lv_internal_radius="3dp"
+        lv:lv_external_radius="20dp"
+        android:layout_height="80dp" />
+</LinearLayout>

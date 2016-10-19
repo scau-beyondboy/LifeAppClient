@@ -15,6 +15,20 @@ public class ClubInfo implements Serializable {
 
     private String clubDesc;
 
+    private int viewType=0;
+
+    public ClubInfo(int viewType) {
+        this.viewType = viewType;
+    }
+
+    public int getViewType() {
+        return viewType;
+    }
+
+    public void setViewType(int viewType) {
+        this.viewType = viewType;
+    }
+
     private static final long serialVersionUID = 1L;
 
     public Long getClubId() {

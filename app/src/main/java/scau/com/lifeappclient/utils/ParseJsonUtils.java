@@ -95,4 +95,25 @@ public class ParseJsonUtils
             return null;
         }
     }
+    /**返回list集合*/
+    public static <T> T parseDataJson(ResponseObject<Object> responseObject,final Type type,final boolean isShowMsg)
+    {
+        if(responseObject==null||responseObject.getData()==null){
+            return null;
+        }
+        Gson gson=new Gson();
+        String data=gson.toJson(responseObject.getData());
+        if(!StringUtils.isEmpty(responseObject.getMsg())&&isShowMsg){
+            ToaskUtils.showToast(responseObject.getMsg());
+        }
+        if(responseObject.getCode()==NetWorkConstants.SUCCESS_CODE)
+        {
+            return  gson.fromJson(data,type);
+        }
+        else
+        {
+           // ToaskUtils.displayToast(data);
+            return null;
+        }
+    }
 }

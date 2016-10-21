@@ -6,10 +6,10 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.OnScrollListener;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
+
+import com.google.gson.reflect.TypeToken;
 
 import net.neevek.android.lib.paginize.Page;
 import net.neevek.android.lib.paginize.PageActivity;
@@ -25,7 +25,7 @@ import scau.com.lifeappclient.adapter.ClubListItemAdapter;
 import scau.com.lifeappclient.constants.NetWorkConstants;
 import scau.com.lifeappclient.constants.ParamConstants;
 import scau.com.lifeappclient.model.ClubInfo;
-import scau.com.lifeappclient.model.ClubPageInfo;
+import scau.com.lifeappclient.model.PageInfo;
 import scau.com.lifeappclient.utils.NetWorkHandlerUtils;
 import scau.com.lifeappclient.utils.ToaskUtils;
 
@@ -86,13 +86,13 @@ public class ClubPage extends Page  implements SwipeRefreshLayout.OnRefreshListe
         params.put(ParamConstants.PAGESIZE,pageSize);
         mLoadingView.start();
         isLoading=true;
-        NetWorkHandlerUtils.postAsynHandler(NetWorkConstants.GET_CLUB_INFO,params,new NetWorkHandlerUtils.PostCallback<ClubPageInfo>(){
+        NetWorkHandlerUtils.postAsynHandler(NetWorkConstants.GET_CLUB_INFO,params,new NetWorkHandlerUtils.PostCallback<PageInfo<ClubInfo>>(){
 
             @Override
-            public void success(ClubPageInfo result) {
+            public void success(PageInfo<ClubInfo> result) {
                 isLoading=false;
                 mLoadingView.stop();
-                List<ClubInfo> clubInfoList=result.getClubInfoList();
+                List<ClubInfo> clubInfoList=result.getData();
                 if(clubInfoList==null||clubInfoList.size()==0){
                     mTvEmpty.setImageResource(R.drawable.not_data);
                     if(mClubReycleView.getAdapter().getItemCount()>0){
@@ -102,7 +102,7 @@ public class ClubPage extends Page  implements SwipeRefreshLayout.OnRefreshListe
                 }else{
                     pageAccount=Integer.valueOf(pageAccount)+1+"";
                     params.put(ParamConstants.PAGEACCOUNT,pageAccount);
-                    mClubReycleView.setAdapter(new ClubListItemAdapter(result.getClubInfoList()));
+                    mClubReycleView.setAdapter(new ClubListItemAdapter(result.getData()));
                     mRefreshLayout.setVisibility(View.VISIBLE);
                     mTvEmpty.setVisibility(View.GONE);
                 }
@@ -117,7 +117,7 @@ public class ClubPage extends Page  implements SwipeRefreshLayout.OnRefreshListe
                 mRefreshLayout.setVisibility(View.GONE);
                 mTvEmpty.setVisibility(View.VISIBLE);
             }
-        },ClubPageInfo.class);
+        },new TypeToken<PageInfo<ClubInfo>>(){}.getType());
     }
     @Override
     public void onRefresh() {
@@ -138,20 +138,20 @@ public class ClubPage extends Page  implements SwipeRefreshLayout.OnRefreshListe
 
     private void loadData(){
         isLoading=true;
-        NetWorkHandlerUtils.postAsynHandler(NetWorkConstants.GET_CLUB_INFO,params,new NetWorkHandlerUtils.PostCallback<ClubPageInfo>(){
+        NetWorkHandlerUtils.postAsynHandler(NetWorkConstants.GET_CLUB_INFO,params,new NetWorkHandlerUtils.PostCallback<PageInfo<ClubInfo>>(){
 
             @Override
-            public void success(ClubPageInfo result) {
+            public void success(PageInfo<ClubInfo> result) {
                 isLoading=false;
                 ((ClubListItemAdapter)mClubReycleView.getAdapter()).removeOneData();
                 mRefreshLayout.setRefreshing(false);
-                List<ClubInfo> clubInfoList=result.getClubInfoList();
+                List<ClubInfo> clubInfoList=result.getData();
                 if(clubInfoList==null||clubInfoList.size()==0){
                     ToaskUtils.showToast("没有新的数据");
                 }else{
                     pageAccount=Integer.valueOf(pageAccount)+1+"";
                     params.put(ParamConstants.PAGEACCOUNT,pageAccount);
-                    ((ClubListItemAdapter)mClubReycleView.getAdapter()).addData(result.getClubInfoList());
+                    ((ClubListItemAdapter)mClubReycleView.getAdapter()).addData(result.getData());
                 }
             }
 
@@ -165,6 +165,6 @@ public class ClubPage extends Page  implements SwipeRefreshLayout.OnRefreshListe
                 mTvEmpty.setImageResource(R.drawable.load_error);
                 mTvEmpty.setVisibility(View.VISIBLE);
             }
-        },ClubPageInfo.class);
+        },new TypeToken<PageInfo<ClubInfo>>(){}.getType());
     }
 }

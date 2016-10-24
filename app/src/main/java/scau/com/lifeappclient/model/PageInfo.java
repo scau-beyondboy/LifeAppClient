@@ -13,7 +13,7 @@ import java.util.List;
 public class PageInfo<T> implements Serializable {
     private int pageAccount;
     private int pageSize;
-    private int Count;
+    private int count;
     private List<T> data;
     private static final long serialVersionUID = 1L;
     public int getPageAccount() {
@@ -33,11 +33,11 @@ public class PageInfo<T> implements Serializable {
     }
 
     public int getCount() {
-        return Count;
+        return count;
     }
 
     public void setCount(int count) {
-        Count = count;
+        this.count = count;
     }
 
     public List<T> getData() {
@@ -53,7 +53,7 @@ public class PageInfo<T> implements Serializable {
         return "PageInfo{" +
                 "pageAccount=" + pageAccount +
                 ", pageSize=" + pageSize +
-                ", Count=" + Count +
+                ", count=" + count +
                 ", data=" + data +
                 '}';
     }

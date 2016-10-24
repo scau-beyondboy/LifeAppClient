@@ -9,4 +9,5 @@ public class NetWorkConstants {
     public static final String USER_REGISTER=HOST+"/user/register";
     public static final String USER_LOGIN=HOST+"/user/login";
     public static final String GET_CLUB_INFO=HOST+"/club/getList";
+    public static final String GET_NOTICE__INFO=HOST+"/notice/getList";
 }

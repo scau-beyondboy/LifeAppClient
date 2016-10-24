@@ -52,7 +52,7 @@ public class ClubListItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             return  new ItemViewHolder(view);
         }else  if(viewType==VIEW_TYPE_LOADING){
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.club_page_footer, parent, false);
+                    .inflate(R.layout.request_page_footer, parent, false);
             return  new FootViewHolder(view);
         }
         return null;

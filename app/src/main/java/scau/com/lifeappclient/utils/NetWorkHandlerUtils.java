@@ -65,6 +65,11 @@ public final class NetWorkHandlerUtils
         void success(T result);
         void fail(Exception e);
     }
+
+    public interface NotDataCallBack
+    {
+        void handle();
+    }
     /**post异步处理*/
     public static<T> void postAsynHandler(String url, Map<String, String> params, final String successMessage,final String failMessage,final PostSuccessCallback postSuccessCallback, final Class<T> tClass)
     {
@@ -209,7 +214,7 @@ public final class NetWorkHandlerUtils
     }
 
     /**post异步处理*/
-    public static<T> void postAsynHandler(String url, Map<String, String> params, final PostCallback postCallback, final Type type)
+    public static<T> void postAsynHandler(String url, Map<String, String> params, final PostCallback postCallback, final NotDataCallBack notDataCallBack,final Type type)
     {
         if(!NetworkUtils.isNetworkReachable())
         {
@@ -230,6 +235,9 @@ public final class NetWorkHandlerUtils
             public void onResponse(ResponseObject<Object> response)
             {
                 T result=ParseJsonUtils.parseDataJson(response,type,false);
+                if(result==null&&notDataCallBack!=null){
+                    notDataCallBack.handle();
+                }
                 if(result!=null&& postCallback !=null)
                 {
                     postCallback.success(result);

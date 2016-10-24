@@ -41,6 +41,7 @@ import java.net.URLConnection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import scau.com.lifeappclient.R;
 
@@ -66,6 +67,8 @@ public class OkHttpNetWorkUtil
         mOkHttpClient = new OkHttpClient();
         //cookie enabled
         mOkHttpClient.setCookieHandler(new CookieManager(null, CookiePolicy.ACCEPT_ORIGINAL_SERVER));
+        mOkHttpClient.setConnectTimeout(3000, TimeUnit.MILLISECONDS);
+        mOkHttpClient.setReadTimeout(3000,TimeUnit.MILLISECONDS);
         mDelivery = new Handler(Looper.getMainLooper());
         mGson = new Gson();
     }

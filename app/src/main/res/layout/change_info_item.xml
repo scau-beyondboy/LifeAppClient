@@ -1,0 +1,31 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:alpha="0.6"
+    android:background="@color/grey"
+    android:orientation="vertical"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        >
+        <TextView
+            android:id="@+id/textView"
+            tools:text="修改昵称"
+            style="@style/text_style4"
+            />
+        <ImageView
+            android:id="@+id/change_back"
+            android:src="@drawable/ic_navigate_black_24dp"
+            style="@style/image_style1"
+            />
+        <include layout="@layout/save_button"/>
+    </RelativeLayout>
+    <scau.com.lifeappclient.view.ClearEditText
+        android:id="@+id/nickname"
+        tools:text="徐国立"
+        style="@style/textv_style5"
+        />
+</LinearLayout>

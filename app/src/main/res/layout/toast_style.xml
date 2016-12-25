@@ -4,9 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:orientation="vertical"
   android:layout_width="wrap_content"
-  android:background="@drawable/toast_bound"
   android:layout_height="wrap_content"
-  android:alpha="0.7"
   >
   <ImageView
     android:layout_width="wrap_content"

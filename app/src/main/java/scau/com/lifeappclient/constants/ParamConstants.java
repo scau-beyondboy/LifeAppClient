@@ -12,4 +12,6 @@ public class ParamConstants {
     public static final String NICK="nickname";
     public static final String PAGEACCOUNT="pageaccount";
     public static final String PAGESIZE="pagesize";
+    public static final String USERID="userId";
+
 }

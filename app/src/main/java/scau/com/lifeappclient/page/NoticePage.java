@@ -162,7 +162,8 @@ public class NoticePage extends Page  implements SwipeRefreshLayout.OnRefreshLis
                 } else {
                     final int account=Integer.valueOf(pageAccount);
                     final int size=Integer.valueOf(pageSize);
-                    if(account*size<=mNoticeReycleView.getAdapter().getItemCount())
+                    int realtotal=account*size;
+                    if(total<=mNoticeReycleView.getAdapter().getItemCount())
                         pageAccount = Integer.valueOf(pageAccount) + 1 + "";
                     params.put(ParamConstants.PAGEACCOUNT, pageAccount);
                     ((NoticeListItemAdapter) mNoticeReycleView.getAdapter()).addData(result.getData());

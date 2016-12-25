@@ -14,6 +14,7 @@ import scau.com.lifeappclient.page.ClubPage;
 import scau.com.lifeappclient.page.ClubWebSitePage;
 import scau.com.lifeappclient.page.LoginPage;
 import scau.com.lifeappclient.page.NoticePage;
+import scau.com.lifeappclient.page.PersonInfoPage;
 import scau.com.lifeappclient.page.ScauMapPage;
 import scau.com.lifeappclient.page.ScauTelPage;
 
@@ -33,7 +34,8 @@ public class LoginActivity extends PageActivity {
 //            new ClubWebSitePage(this).onShown("http://su.scau.edu.cn/").show(false);
 //            new ScauMapPage(this).show(false);
 //            new ScauTelPage(this).show(false);
-            new NoticePage(this).show(false);
+          //  new NoticePage(this).show(false);
+            new PersonInfoPage(this).show(true);
         }
     }
     private void requestPermission(){

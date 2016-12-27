@@ -60,7 +60,7 @@ public class ClubListItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemViewType(int position) {
-        return mClubInfoList.get(position)==null ?VIEW_TYPE_LOADING:VIEW_TYPE_ITEM;
+        return mClubInfoList.get(position).getViewType()==VIEW_TYPE_LOADING?VIEW_TYPE_LOADING:VIEW_TYPE_ITEM;
     }
 
     @Override

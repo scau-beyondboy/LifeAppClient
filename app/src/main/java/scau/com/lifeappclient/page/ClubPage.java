@@ -6,6 +6,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.OnScrollListener;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -17,7 +18,7 @@ import net.neevek.android.lib.paginize.annotation.InjectView;
 import net.neevek.android.lib.paginize.annotation.PageLayout;
 
 
-import java.util.List;
+import java.util.ArrayList;
 
 import me.wangyuwei.loadingview.LoadingView;
 import scau.com.lifeappclient.R;
@@ -27,6 +28,7 @@ import scau.com.lifeappclient.constants.ParamConstants;
 import scau.com.lifeappclient.model.ClubInfo;
 import scau.com.lifeappclient.model.PageInfo;
 import scau.com.lifeappclient.utils.NetWorkHandlerUtils;
+import scau.com.lifeappclient.utils.OkHttpNetWorkUtil;
 import scau.com.lifeappclient.utils.ToaskUtils;
 
 /**
@@ -35,8 +37,9 @@ import scau.com.lifeappclient.utils.ToaskUtils;
 @PageLayout(R.layout.requst_listdata_page)
 public class ClubPage extends Page  implements SwipeRefreshLayout.OnRefreshListener,View.OnClickListener{
     private static final String TAG = ClubPage.class.getName();
-    private String pageAccount="1";
-    private final String pageSize="5";
+    private int pageStart =0;
+    private int pageEnd =5;
+    private static final int SIZE=5;
     private final int visibleThreshold = 1;
     private final ArrayMap<String,String> params=new ArrayMap<>(2);
     @InjectView(value = R.id.swipeRefreshLayout,listenerTypes = SwipeRefreshLayout.OnRefreshListener.class)
@@ -48,7 +51,6 @@ public class ClubPage extends Page  implements SwipeRefreshLayout.OnRefreshListe
     @InjectView(R.id.progress)
     private LoadingView mLoadingView;
     private boolean isLoading=false;
-    private int total=0;
     public ClubPage(PageActivity pageActivity) {
         super(pageActivity);
     }
@@ -71,9 +73,9 @@ public class ClubPage extends Page  implements SwipeRefreshLayout.OnRefreshListe
                         new  Handler().post(new Runnable() {
                             @Override
                             public void run() {
-                                final ClubListItemAdapter clubListItemAdapter=(ClubListItemAdapter) mClubReycleView.getAdapter();
                                 //  clubListItemAdapter.addOneData(new ClubInfo(ClubListItemAdapter.VIEW_TYPE_LOADING));
-                                clubListItemAdapter.addOneData(null);
+                               // isScrollLoad=true;
+                               // clubListItemAdapter.addOneData(new ClubInfo(ClubListItemAdapter.VIEW_TYPE_LOADING));
                                 loadData();
                             }
                         });
@@ -81,58 +83,12 @@ public class ClubPage extends Page  implements SwipeRefreshLayout.OnRefreshListe
                 }
             });
             mClubReycleView.setLayoutManager(linearLayoutManager);
+            mClubReycleView.setAdapter(new ClubListItemAdapter(new ArrayList<ClubInfo>()));
         }
-        params.put(ParamConstants.PAGEACCOUNT,pageAccount);
-        params.put(ParamConstants.PAGESIZE,pageSize);
-        mLoadingView.start();
-        isLoading=true;
-        NetWorkHandlerUtils.postAsynHandler(NetWorkConstants.GET_CLUB_INFO,params,new NetWorkHandlerUtils.PostCallback<PageInfo<ClubInfo>>(){
-
-            @Override
-            public void success(PageInfo<ClubInfo> result) {
-                isLoading=false;
-                mLoadingView.stop();
-                List<ClubInfo> clubInfoList=result.getData();
-                if(clubInfoList==null||clubInfoList.size()==0){
-                    mTvEmpty.setImageResource(R.drawable.not_data);
-                    if(mClubReycleView.getAdapter().getItemCount()>0){
-                        mRefreshLayout.setVisibility(View.VISIBLE);
-                    }
-                    mTvEmpty.setVisibility(View.VISIBLE);
-                }else{
-                    pageAccount=Integer.valueOf(pageAccount)+1+"";
-                    params.put(ParamConstants.PAGEACCOUNT,pageAccount);
-                    total=result.getCount();
-                    mClubReycleView.setAdapter(new ClubListItemAdapter(result.getData()));
-                    mRefreshLayout.setVisibility(View.VISIBLE);
-                    mTvEmpty.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void fail(Exception e) {
-                e.printStackTrace();
-                mLoadingView.stop();
-                isLoading=false;
-                mTvEmpty.setImageResource(R.drawable.load_error);
-                mRefreshLayout.setVisibility(View.GONE);
-                mTvEmpty.setVisibility(View.VISIBLE);
-            }
-        },new NetWorkHandlerUtils.NotDataCallBack() {
-            @Override
-            public void handle() {
-                mRefreshLayout.setRefreshing(false);
-                ToaskUtils.showToast("没有新的数据");
-            }
-        },new TypeToken<PageInfo<ClubInfo>>(){}.getType());
+        loadData();
     }
     @Override
     public void onRefresh() {
-        if(total==mClubReycleView.getLayoutManager().getItemCount()){
-            mRefreshLayout.setRefreshing(false);
-            ToaskUtils.showToast("没有新的数据");
-            return;
-        }
         if(!isLoading){
             loadData();
             return;
@@ -145,47 +101,76 @@ public class ClubPage extends Page  implements SwipeRefreshLayout.OnRefreshListe
         switch (v.getId()){
             case R.id.empty_view:
                 mTvEmpty.setVisibility(View.GONE);
-                init();
+                loadData();
                 break;
         }
     }
 
     private void loadData(){
         isLoading=true;
+        NetWorkHandlerUtils.postAsynHandler(NetWorkConstants.GET_TOTAL,null,"获取总数成功","获取总数失败",new NetWorkHandlerUtils.PostSuccessCallback<Integer>(){
+            @Override
+            public void success(Integer result) {
+                final int score=result-pageStart;
+                if(5>score&&score>0){
+                    pageEnd =score+pageStart;
+                }else if(score>=5){
+                    pageEnd =pageStart+SIZE;
+                }else {
+                    pageEnd =pageStart;
+                }
+                getData();
+            }
+        },Integer.class);
+    }
+
+    private void getData(){
+        if(pageEnd ==pageStart){
+            isLoading=false;
+            mRefreshLayout.setRefreshing(false);
+            return;
+        }
+        mLoadingView.start();
+        params.put(ParamConstants.PAGESIZE, pageEnd +"");
+        params.put(ParamConstants.PAGESTART,pageStart+"");
+        pageStart=pageEnd;
         NetWorkHandlerUtils.postAsynHandler(NetWorkConstants.GET_CLUB_INFO,params,new NetWorkHandlerUtils.PostCallback<PageInfo<ClubInfo>>(){
 
             @Override
             public void success(PageInfo<ClubInfo> result) {
+                Log.d(TAG,"beyondboy返回数据>>>>>>>>>>>:"+result.toString());
+//                if(isScrollLoad){
+//                    isScrollLoad=false;
+//                    ((ClubListItemAdapter)mClubReycleView.getAdapter()).removeOneData();
+//                }
                 isLoading=false;
-                ((ClubListItemAdapter)mClubReycleView.getAdapter()).removeOneData();
+                mLoadingView.stop();
+                ((ClubListItemAdapter)mClubReycleView.getAdapter()).addData(result.getData());
+                Log.d(TAG,"beyondboy输出结果>>>>>>>>>>:"+mClubReycleView.getAdapter().getItemCount());
+                mRefreshLayout.setVisibility(View.VISIBLE);
+                mTvEmpty.setVisibility(View.GONE);
                 mRefreshLayout.setRefreshing(false);
-                List<ClubInfo> clubInfoList=result.getData();
-                total=result.getCount();
-                if(clubInfoList==null||clubInfoList.size()==0){
-                    ToaskUtils.showToast("没有新的数据");
-                }else{
-                    pageAccount=Integer.valueOf(pageAccount)+1+"";
-                    params.put(ParamConstants.PAGEACCOUNT,pageAccount);
-                    ((ClubListItemAdapter)mClubReycleView.getAdapter()).addData(result.getData());
-                }
             }
 
             @Override
             public void fail(Exception e) {
-                isLoading=false;
-                ((ClubListItemAdapter)mClubReycleView.getAdapter()).removeOneData();
                 e.printStackTrace();
-                mRefreshLayout.setRefreshing(false);
-                mRefreshLayout.setVisibility(View.GONE);
+                mLoadingView.stop();
+                isLoading=false;
                 mTvEmpty.setImageResource(R.drawable.load_error);
+                mRefreshLayout.setVisibility(View.GONE);
                 mTvEmpty.setVisibility(View.VISIBLE);
+                mRefreshLayout.setRefreshing(false);
             }
         },new NetWorkHandlerUtils.NotDataCallBack() {
             @Override
             public void handle() {
+                mLoadingView.stop();
+                isLoading=false;
                 mRefreshLayout.setRefreshing(false);
                 ToaskUtils.showToast("没有新的数据");
             }
         },new TypeToken<PageInfo<ClubInfo>>(){}.getType());
     }
+
 }

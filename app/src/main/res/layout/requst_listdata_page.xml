@@ -21,7 +21,7 @@
         lv:lv_duration="5"
         lv:lv_start_color="#2eea24"
         lv:lv_internal_radius="10dp"
-        lv:lv_external_radius="80dp"
+        lv:lv_external_radius="60dp"
         android:layout_height="match_parent" />
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/empty_view"

@@ -5,6 +5,7 @@ import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -15,6 +16,7 @@ import net.neevek.android.lib.paginize.PageActivity;
 import net.neevek.android.lib.paginize.annotation.InjectView;
 import net.neevek.android.lib.paginize.annotation.PageLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import me.wangyuwei.loadingview.LoadingView;
@@ -32,8 +34,10 @@ import scau.com.lifeappclient.utils.ToaskUtils;
  */
 @PageLayout(R.layout.requst_listdata_page)
 public class NoticePage extends Page  implements SwipeRefreshLayout.OnRefreshListener,View.OnClickListener{
-    private String pageAccount="1";
-    private final String pageSize="5";
+    private static final String TAG = NoticePage.class.getName();
+    private int pageStart=0;
+    private int pageEnd=5;
+    private static final int SIZE=5;
     private final int visibleThreshold = 1;
     private final ArrayMap<String,String> params=new ArrayMap<>(2);
     @InjectView(value = R.id.swipeRefreshLayout,listenerTypes = SwipeRefreshLayout.OnRefreshListener.class)
@@ -45,7 +49,6 @@ public class NoticePage extends Page  implements SwipeRefreshLayout.OnRefreshLis
     @InjectView(R.id.progress)
     private LoadingView mLoadingView;
     private boolean isLoading=false;
-    private int total=0;
     public NoticePage(PageActivity pageActivity) {
         super(pageActivity);
     }
@@ -69,8 +72,8 @@ public class NoticePage extends Page  implements SwipeRefreshLayout.OnRefreshLis
                         new Handler().post(new Runnable() {
                             @Override
                             public void run() {
-                                final NoticeListItemAdapter noticeListItemAdapter=(NoticeListItemAdapter) mNoticeReycleView.getAdapter();
-                                noticeListItemAdapter.addOneData(new NoticeInfo(NoticeListItemAdapter.VIEW_TYPE_LOADING ));
+//                                final NoticeListItemAdapter noticeListItemAdapter=(NoticeListItemAdapter) mNoticeReycleView.getAdapter();
+//                                noticeListItemAdapter.addOneData(new NoticeInfo(NoticeListItemAdapter.VIEW_TYPE_LOADING ));
                                 loadData();
                             }
                         });
@@ -78,61 +81,16 @@ public class NoticePage extends Page  implements SwipeRefreshLayout.OnRefreshLis
                 }
             });
             mNoticeReycleView.setLayoutManager(linearLayoutManager);
+            mNoticeReycleView.setAdapter(new NoticeListItemAdapter(new ArrayList<NoticeInfo>()));
         }
-        params.put(ParamConstants.PAGEACCOUNT,pageAccount);
-        params.put(ParamConstants.PAGESIZE,pageSize);
-        mLoadingView.start();
-        isLoading=true;
-        NetWorkHandlerUtils.postAsynHandler(NetWorkConstants.GET_NOTICE__INFO,params,new NetWorkHandlerUtils.PostCallback<PageInfo<NoticeInfo>>(){
-
-            @Override
-            public void success(PageInfo<NoticeInfo> result) {
-                isLoading=false;
-                mLoadingView.stop();
-                List<NoticeInfo> noticeListInfo=result.getData();
-                if(noticeListInfo==null||noticeListInfo.size()==0){
-                    mTvEmpty.setImageResource(R.drawable.not_data);
-                    if(mNoticeReycleView.getAdapter().getItemCount()>0){
-                        mRefreshLayout.setVisibility(View.VISIBLE);
-                    }
-                    mTvEmpty.setVisibility(View.VISIBLE);
-                }else{
-                    final int account=Integer.valueOf(pageAccount);
-                    final int size=Integer.valueOf(pageSize);
-                    params.put(ParamConstants.PAGEACCOUNT,pageAccount);
-                    total=result.getCount();
-                    mNoticeReycleView.setAdapter(new NoticeListItemAdapter(result.getData()));
-                    if(account*size>=mNoticeReycleView.getAdapter().getItemCount())
-                        pageAccount=Integer.valueOf(pageAccount)+1+"";
-                    mRefreshLayout.setVisibility(View.VISIBLE);
-                    mTvEmpty.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void fail(Exception e) {
-                e.printStackTrace();
-                mLoadingView.stop();
-                isLoading=false;
-                mTvEmpty.setImageResource(R.drawable.load_error);
-                mRefreshLayout.setVisibility(View.GONE);
-                mTvEmpty.setVisibility(View.VISIBLE);
-            }
-        },new NetWorkHandlerUtils.NotDataCallBack() {
-            @Override
-            public void handle() {
-                isLoading=false;
-                mRefreshLayout.setRefreshing(false);
-                ToaskUtils.showToast("没有新的数据");
-            }
-        },new TypeToken<PageInfo<NoticeInfo>>(){}.getType());
+        loadData();
     }
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.empty_view:
                 mTvEmpty.setVisibility(View.GONE);
-                init();
+                loadData();
                 break;
         }
     }
@@ -148,43 +106,65 @@ public class NoticePage extends Page  implements SwipeRefreshLayout.OnRefreshLis
 
     private void loadData(){
         isLoading=true;
-        NetWorkHandlerUtils.postAsynHandler(NetWorkConstants.GET_NOTICE__INFO, params, new NetWorkHandlerUtils.PostCallback<PageInfo<NoticeInfo>>() {
+        NetWorkHandlerUtils.postAsynHandler(NetWorkConstants.GET_NOTICE_TOTAL,null,"获取总数成功","获取总数失败",new NetWorkHandlerUtils.PostSuccessCallback<Integer>(){
+            @Override
+            public void success(Integer result) {
+                final int score=result-pageStart;
+                if(5>score&&score>0){
+                    pageEnd =score+pageStart;
+                }else if(score>=5){
+                    pageEnd =pageStart+SIZE;
+                }else {
+                    pageEnd =pageStart;
+                }
+                getData();
+            }
+        },Integer.class);
+    }
+
+    private void getData(){
+        if(pageEnd ==pageStart){
+            isLoading=false;
+            mRefreshLayout.setRefreshing(false);
+            return;
+        }
+        mLoadingView.start();
+        params.put(ParamConstants.PAGESIZE, pageEnd +"");
+        params.put(ParamConstants.PAGESTART,pageStart+"");
+        pageStart=pageEnd;
+        NetWorkHandlerUtils.postAsynHandler(NetWorkConstants.GET_NOTICE__INFO,params,new NetWorkHandlerUtils.PostCallback<PageInfo<NoticeInfo>>(){
 
             @Override
             public void success(PageInfo<NoticeInfo> result) {
-                isLoading = false;
-                ((NoticeListItemAdapter) mNoticeReycleView.getAdapter()).removeOneData();
+                Log.d(TAG,"beyondboy返回数据>>>>>>>>>>>:"+result.toString());
+//                if(isScrollLoad){
+//                    isScrollLoad=false;
+//                    ((ClubListItemAdapter)mClubReycleView.getAdapter()).removeOneData();
+//                }
+                isLoading=false;
+                mLoadingView.stop();
+                ((NoticeListItemAdapter) mNoticeReycleView.getAdapter()).addData(result.getData());
+                Log.d(TAG,"beyondboy输出结果>>>>>>>>>>:"+mNoticeReycleView.getAdapter().getItemCount());
+                mRefreshLayout.setVisibility(View.VISIBLE);
+                mTvEmpty.setVisibility(View.GONE);
                 mRefreshLayout.setRefreshing(false);
-                List<NoticeInfo> noticListInfo = result.getData();
-                total = result.getCount();
-                if (noticListInfo == null || noticListInfo.size() == 0) {
-                    ToaskUtils.showToast("没有新的数据");
-                } else {
-                    final int account=Integer.valueOf(pageAccount);
-                    final int size=Integer.valueOf(pageSize);
-                    int realtotal=account*size;
-                    if(total<=mNoticeReycleView.getAdapter().getItemCount())
-                        pageAccount = Integer.valueOf(pageAccount) + 1 + "";
-                    params.put(ParamConstants.PAGEACCOUNT, pageAccount);
-                    ((NoticeListItemAdapter) mNoticeReycleView.getAdapter()).addData(result.getData());
-                }
             }
 
             @Override
             public void fail(Exception e) {
-                isLoading = false;
-                ((NoticeListItemAdapter) mNoticeReycleView.getAdapter()).removeOneData();
                 e.printStackTrace();
-                mRefreshLayout.setRefreshing(false);
-                mRefreshLayout.setVisibility(View.GONE);
+                mLoadingView.stop();
+                isLoading=false;
                 mTvEmpty.setImageResource(R.drawable.load_error);
+                mRefreshLayout.setVisibility(View.GONE);
                 mTvEmpty.setVisibility(View.VISIBLE);
+                mRefreshLayout.setRefreshing(false);
             }
-        }, new NetWorkHandlerUtils.NotDataCallBack() {
+        },new NetWorkHandlerUtils.NotDataCallBack() {
             @Override
             public void handle() {
+                mLoadingView.stop();
                 isLoading=false;
-                ((NoticeListItemAdapter) mNoticeReycleView.getAdapter()).removeOneData();
                 mRefreshLayout.setRefreshing(false);
                 ToaskUtils.showToast("没有新的数据");
             }

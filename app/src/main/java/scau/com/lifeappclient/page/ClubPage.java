@@ -28,7 +28,6 @@ import scau.com.lifeappclient.constants.ParamConstants;
 import scau.com.lifeappclient.model.ClubInfo;
 import scau.com.lifeappclient.model.PageInfo;
 import scau.com.lifeappclient.utils.NetWorkHandlerUtils;
-import scau.com.lifeappclient.utils.OkHttpNetWorkUtil;
 import scau.com.lifeappclient.utils.ToaskUtils;
 
 /**
@@ -108,7 +107,7 @@ public class ClubPage extends Page  implements SwipeRefreshLayout.OnRefreshListe
 
     private void loadData(){
         isLoading=true;
-        NetWorkHandlerUtils.postAsynHandler(NetWorkConstants.GET_TOTAL,null,"获取总数成功","获取总数失败",new NetWorkHandlerUtils.PostSuccessCallback<Integer>(){
+        NetWorkHandlerUtils.postAsynHandler(NetWorkConstants.GET_CLUB_TOTAL,null,"获取总数成功","获取总数失败",new NetWorkHandlerUtils.PostSuccessCallback<Integer>(){
             @Override
             public void success(Integer result) {
                 final int score=result-pageStart;

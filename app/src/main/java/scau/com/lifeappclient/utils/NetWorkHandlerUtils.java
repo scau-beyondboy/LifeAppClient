@@ -245,4 +245,39 @@ public final class NetWorkHandlerUtils
             }
         }, params);
     }
+
+    /**post异步处理*/
+    public static void postAsynHandler(String url, Object params, final PostSuccessCallback postSuccessCallback,final PostFailCallback postFailCallback)
+    {
+        if(!NetworkUtils.isNetworkReachable())
+        {
+            ToaskUtils.displayToast("没有网络");
+            return;
+        }
+        OkHttpNetWorkUtil.postAsyn(url, new OkHttpNetWorkUtil.ResultCallback<ResponseObject<Object>>()
+        {
+            @Override
+            public void onError(Request request, Exception e)
+            {
+                e.printStackTrace();
+                if(postFailCallback!=null)
+                    postFailCallback.fail();
+            }
+
+            @Override
+            public void onResponse(ResponseObject<Object> response)
+            {
+                if(response!=null)
+                {
+                    postSuccessCallback.success(response);
+                }
+            }
+        }, params);
+    }
+
+    /**post异步处理*/
+    public static void postAsynHandler(String url, Object params, final PostSuccessCallback postSuccessCallback)
+    {
+      postAsynHandler(url,params,postSuccessCallback,null);
+    }
 }

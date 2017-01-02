@@ -139,6 +139,10 @@ public class OkHttpNetWorkUtil
         getInstance()._postAsyn(url, callback, params);
     }
 
+    public static void postAsyn(String url, final ResultCallback callback, Object params)
+    {
+        getInstance()._postAsyn(url, callback, params);
+    }
     /**
      * @see #_postAsyn(String, ResultCallback, Map)
      */
@@ -273,6 +277,20 @@ public class OkHttpNetWorkUtil
         Response response = mOkHttpClient.newCall(request).execute();
         return response;
     }
+
+    /**
+     * 同步的Post请求，返回响应实体
+     *
+     * @param url 网络地址
+     * @param params post的参数
+     */
+    private Response _post(String url,Object object) throws IOException
+    {
+        Request request = buildPostRequest(url, object);
+        Response response = mOkHttpClient.newCall(request).execute();
+        return response;
+    }
+
     /**
      * 同步的Post请求，返回字符内容
      * @param url 网络地址
@@ -296,6 +314,11 @@ public class OkHttpNetWorkUtil
         deliveryResult(callback, request);
     }
 
+    private void _postAsyn(String url, final ResultCallback callback, Object object)
+    {
+        Request request = buildPostRequest(url, object);
+        deliveryResult(callback, request);
+    }
     /**
      * 异步的post请求
      * @param url   网络地址
@@ -576,6 +599,18 @@ public class OkHttpNetWorkUtil
     {
         //FormEncodingBuilder builder = new FormEncodingBuilder();
         final String json=mGson.toJson(params);
+        RequestBody requestBody =RequestBody.create(JSON,json);
+        return new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+    }
+
+    /**添加请求参数*/
+    private Request buildPostRequest(String url,Object object)
+    {
+        //FormEncodingBuilder builder = new FormEncodingBuilder();
+        final String json=mGson.toJson(object);
         RequestBody requestBody =RequestBody.create(JSON,json);
         return new Request.Builder()
                 .url(url)

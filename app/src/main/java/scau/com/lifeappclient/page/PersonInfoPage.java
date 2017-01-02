@@ -51,6 +51,7 @@ public class PersonInfoPage extends Page implements View.OnClickListener{
     @Override
     public void onShown() {
         super.onShown();
+        init();
         getData();
     }
 

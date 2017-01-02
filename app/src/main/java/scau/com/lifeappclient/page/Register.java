@@ -12,13 +12,16 @@ import android.widget.TextView;
 import net.neevek.android.lib.paginize.Page;
 import net.neevek.android.lib.paginize.PageActivity;
 import net.neevek.android.lib.paginize.annotation.InjectView;
+import net.neevek.android.lib.paginize.annotation.InsertPageLayout;
 import net.neevek.android.lib.paginize.annotation.PageLayout;
 
 import scau.com.lifeappclient.R;
 import scau.com.lifeappclient.constants.NetWorkConstants;
+import scau.com.lifeappclient.constants.PageCode;
 import scau.com.lifeappclient.constants.ParamConstants;
 import scau.com.lifeappclient.model.Token;
 import scau.com.lifeappclient.utils.NetWorkHandlerUtils;
+import scau.com.lifeappclient.utils.OkHttpNetWorkUtil;
 import scau.com.lifeappclient.utils.ShareUtils;
 import scau.com.lifeappclient.utils.SoftInputUtils;
 import scau.com.lifeappclient.utils.StringUtils;
@@ -27,8 +30,9 @@ import scau.com.lifeappclient.utils.ToaskUtils;
 /**
  * Created by beyondboy on 2016/10/16.
  */
-@PageLayout(R.layout.register)
-public class Register extends Page implements TextView.OnEditorActionListener,View.OnClickListener {
+//@PageLayout(R.layout.register)
+@InsertPageLayout(value = R.layout.register,parent = R.id.container)
+public class Register extends ToolBarPage implements TextView.OnEditorActionListener{
     private static final String TAG = Register.class.getName();
     @InjectView(R.id.account)
     private EditText mEtAccount;
@@ -74,12 +78,17 @@ public class Register extends Page implements TextView.OnEditorActionListener,Vi
             public void success(Token result) {
                 ShareUtils.putUserId(result.getUserId());
                 ShareUtils.putUserToken(result.getUserToken());
+                ShareUtils.putStr(ParamConstants.USR_NICK,account);
+                ShareUtils.putStr(ParamConstants.USR_PWD,pwd1);
+                setReturnData(PageCode.REGISTER_PAGE);
+                hide(true);
             }
         },Token.class);
     }
 
     @Override
     public void onClick(View v) {
+        super.onClick(v);
         switch (v.getId()){
             case R.id.register:
                 handlerDone();

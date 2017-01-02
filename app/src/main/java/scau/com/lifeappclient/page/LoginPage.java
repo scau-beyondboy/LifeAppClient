@@ -12,10 +12,12 @@ import android.widget.TextView;
 import net.neevek.android.lib.paginize.Page;
 import net.neevek.android.lib.paginize.PageActivity;
 import net.neevek.android.lib.paginize.annotation.InjectView;
+import net.neevek.android.lib.paginize.annotation.InsertPageLayout;
 import net.neevek.android.lib.paginize.annotation.PageLayout;
 
 import scau.com.lifeappclient.R;
 import scau.com.lifeappclient.constants.NetWorkConstants;
+import scau.com.lifeappclient.constants.PageCode;
 import scau.com.lifeappclient.constants.ParamConstants;
 import scau.com.lifeappclient.model.Token;
 import scau.com.lifeappclient.utils.NetWorkHandlerUtils;
@@ -27,8 +29,9 @@ import scau.com.lifeappclient.utils.ToaskUtils;
 /**
  * Created by beyondboy on 2016/10/16.
  */
-@PageLayout(R.layout.login)
-public class LoginPage extends Page implements View.OnClickListener,TextView.OnEditorActionListener {
+//@PageLayout(R.layout.login)
+@InsertPageLayout(value = R.layout.login,parent = R.id.container)
+public class LoginPage extends ToolBarPage implements TextView.OnEditorActionListener {
     private static final String TAG = LoginPage.class.getName();
     @InjectView(value = R.id.account)
     private EditText mEtAccount;
@@ -43,7 +46,14 @@ public class LoginPage extends Page implements View.OnClickListener,TextView.OnE
     }
 
     @Override
+    public void onShown() {
+        super.onShown();
+        setTitleText("登录");
+    }
+
+    @Override
     public void onClick(View v) {
+        super.onClick(v);
         switch (v.getId()){
             case R.id.register:
                 new Register(getContext()).show(true);
@@ -80,4 +90,19 @@ public class LoginPage extends Page implements View.OnClickListener,TextView.OnE
             }
         },Token.class);
     }
+
+    @Override
+    public void onUncover(Object arg) {
+        super.onUncover(arg);
+        Log.d(TAG,"注册成功:"+arg);
+        if(arg instanceof  Integer){
+            final int code=(Integer)arg;
+            switch (code){
+                case PageCode.REGISTER_PAGE:
+                    mEtAccount.setText(ShareUtils.getStr(ParamConstants.USR_NICK,""));
+                    mEtPwd.setText(ShareUtils.getStr(ParamConstants.USR_PWD,""));
+                    break;
+            }
+        }
+      }
 }

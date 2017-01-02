@@ -32,4 +32,28 @@ public class ShareUtils
     {
         return appContext.getSharedPreferences(FILE_NAME,Context.MODE_PRIVATE).getString(TOKEN,null);
     }
-}
+
+
+    public static void putStr(String key,String value){
+        appContext.getSharedPreferences(FILE_NAME,Context.MODE_PRIVATE).edit().putString(key,value).apply();
+    }
+
+    public static void putInt(String key,int value){
+        appContext.getSharedPreferences(FILE_NAME,Context.MODE_PRIVATE).edit().putInt(key,value).apply();
+    }
+
+    public static void putBool(String key,boolean value){
+        appContext.getSharedPreferences(FILE_NAME,Context.MODE_PRIVATE).edit().putBoolean(key, value).apply();
+    }
+    public static String getStr(String key,String defualt){
+        return appContext.getSharedPreferences(FILE_NAME,Context.MODE_PRIVATE).getString(key,defualt);
+    }
+
+    public static int getInt(String key,int defualt){
+        return appContext.getSharedPreferences(FILE_NAME,Context.MODE_PRIVATE).getInt(key, defualt);
+    }
+
+    public static boolean getBoolean(String key,boolean defualt){
+        return appContext.getSharedPreferences(FILE_NAME,Context.MODE_PRIVATE).getBoolean(key, defualt);
+    }
+    }

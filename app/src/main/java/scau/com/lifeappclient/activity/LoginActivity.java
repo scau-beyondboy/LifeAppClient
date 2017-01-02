@@ -30,14 +30,14 @@ public class LoginActivity extends PageActivity {
         super.onCreate(savedInstanceState);
         requestPermission();
         if(savedInstanceState==null){
-            //new LoginPage(this).show(false);
+            new LoginPage(this).show(true);
 //            new ClubPage(this).show(false);
 //            new ClubWebSitePage(this).onShown("http://su.scau.edu.cn/").show(false);
 //            new ScauMapPage(this).show(false);
 //            new ScauTelPage(this).show(false);
 //            new NoticePage(this).show(false);
 //            new PersonInfoPage(this).show(true);
-            new PickUpInfoPage(this).show(false);
+          //  new PickUpInfoPage(this).show(false);
         }
     }
     private void requestPermission(){

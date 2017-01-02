@@ -11,9 +11,12 @@ import android.widget.ImageView;
 
 import com.google.gson.reflect.TypeToken;
 
+import net.neevek.android.lib.paginize.InnerPage;
 import net.neevek.android.lib.paginize.Page;
 import net.neevek.android.lib.paginize.PageActivity;
+import net.neevek.android.lib.paginize.ViewWrapper;
 import net.neevek.android.lib.paginize.annotation.InjectView;
+import net.neevek.android.lib.paginize.annotation.InsertPageLayout;
 import net.neevek.android.lib.paginize.annotation.PageLayout;
 
 import java.util.ArrayList;
@@ -33,7 +36,8 @@ import scau.com.lifeappclient.utils.ToaskUtils;
  * Created by beyondboy on 2016/10/24.
  */
 @PageLayout(R.layout.requst_listdata_page)
-public class NoticePage extends Page  implements SwipeRefreshLayout.OnRefreshListener,View.OnClickListener{
+//@InsertPageLayout(value = R.layout.requst_listdata_page,parent = R.id.container)
+public class NoticePage extends InnerPage implements SwipeRefreshLayout.OnRefreshListener,View.OnClickListener{
     private static final String TAG = NoticePage.class.getName();
     private int pageStart=0;
     private int pageEnd=5;
@@ -49,8 +53,9 @@ public class NoticePage extends Page  implements SwipeRefreshLayout.OnRefreshLis
     @InjectView(R.id.progress)
     private LoadingView mLoadingView;
     private boolean isLoading=false;
-    public NoticePage(PageActivity pageActivity) {
-        super(pageActivity);
+    public NoticePage(ViewWrapper innerPageContainer) {
+        super(innerPageContainer);
+       // setTitleText("重要公告");
     }
 
     @Override

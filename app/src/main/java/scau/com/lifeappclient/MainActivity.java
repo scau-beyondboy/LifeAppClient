@@ -1,22 +1,19 @@
 package scau.com.lifeappclient;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 
-import scau.com.lifeappclient.activity.LoginActivity;
-import scau.com.lifeappclient.utils.ShareUtils;
-import scau.com.lifeappclient.utils.SoftInputUtils;
+import net.neevek.android.lib.paginize.PageActivity;
 
-public class MainActivity extends AppCompatActivity {
+import scau.com.lifeappclient.page.TagPage;
+
+public class MainActivity extends PageActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+       // setContentView(R.layout.activity_main);
        // if(ShareUtils.getUserId()<0){
-            startActivity(new Intent(MainActivity.this,LoginActivity.class));
+//            startActivity(new Intent(MainActivity.this,LoginActivity.class));
     //    }
 //        findViewById(R.id.load).setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -24,5 +21,7 @@ public class MainActivity extends AppCompatActivity {
 //                startActivity(new Intent(MainActivity.this, LoginActivity.class));
 //            }
 //        });
+//        new SimpleTabPage(this).show(true);
+        new TagPage(this).show(true);
     }
 }

@@ -4,8 +4,10 @@ import android.support.v4.util.ArrayMap;
 import android.view.View;
 import android.widget.TextView;
 
+import net.neevek.android.lib.paginize.InnerPage;
 import net.neevek.android.lib.paginize.Page;
 import net.neevek.android.lib.paginize.PageActivity;
+import net.neevek.android.lib.paginize.ViewWrapper;
 import net.neevek.android.lib.paginize.annotation.InjectView;
 import net.neevek.android.lib.paginize.annotation.PageLayout;
 
@@ -21,7 +23,7 @@ import scau.com.lifeappclient.utils.StringUtils;
  * Created by beyondboy on 2016/12/25.
  */
 @PageLayout(R.layout.login_info)
-public class PersonInfoPage extends Page implements View.OnClickListener{
+public class PersonInfoPage extends InnerPage implements View.OnClickListener{
 
     @InjectView(value = R.id.num_layout,listenerTypes = View.OnClickListener.class)
     private View nickNameView;
@@ -44,8 +46,8 @@ public class PersonInfoPage extends Page implements View.OnClickListener{
     @InjectView(R.id.address)
     private TextView classTxView;
     private UserDetail userDetail;
-    public PersonInfoPage(PageActivity pageActivity) {
-        super(pageActivity);
+    public PersonInfoPage(ViewWrapper innerPageContainer) {
+        super(innerPageContainer);
     }
 
     @Override

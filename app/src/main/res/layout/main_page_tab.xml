@@ -7,6 +7,20 @@
     android:background="#ffffffff"
     android:fitsSystemWindows="true"
     >
+    <include layout="@layout/toobar_layout"/>
+    <!--<android.support.design.widget.AppBarLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"-->
+        <!--&gt;-->
+
+        <!--<android.support.v7.widget.Toolbar-->
+            <!--android:id="@+id/tb_header_bar"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="?attr/actionBarSize"-->
+            <!--app:popupTheme="@style/ThemeOverlay.AppCompat.Light"-->
+            <!--/>-->
+    <!--</android.support.design.widget.AppBarLayout>-->
     <FrameLayout
         android:id="@+id/layout_content_container"
         android:layout_width="match_parent"
@@ -18,9 +32,9 @@
         android:id="@+id/layout_tab_container"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:background="@android:color/holo_green_light"
         android:layout_gravity="bottom"
-        app:tabTextAppearance="@style/MainTheme_Tab"
+        app:tabTextAppearance="@style/TextAppearance.PaginizeDemo.Tab"
         app:tabPadding="4dp"
         app:tabMode="fixed"
         app:tabIndicatorColor="#fff"

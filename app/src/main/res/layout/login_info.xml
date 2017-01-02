@@ -3,30 +3,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize"
-        android:background="@color/white"
-        >
-        <TextView
-            android:id="@+id/textView"
-            android:text="@string/info_person"
-            android:textColor="@color/black"
-            style="@style/text_style4"
-            />
-        <ImageView
-            android:id="@+id/personinfo_back"
-            android:src="@drawable/ic_navigate_black_24dp"
-            style="@style/image_style1"
-            android:contentDescription="@null"
-            />
-    </RelativeLayout>
+    <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="?android:attr/actionBarSize"-->
+        <!--android:background="@color/white"-->
+        <!--&gt;-->
+        <!--<TextView-->
+            <!--android:id="@+id/textView"-->
+            <!--android:text="@string/info_person"-->
+            <!--android:textColor="@color/black"-->
+            <!--style="@style/text_style4"-->
+            <!--/>-->
+        <!--<ImageView-->
+            <!--android:id="@+id/personinfo_back"-->
+            <!--android:src="@drawable/ic_navigate_black_24dp"-->
+            <!--style="@style/image_style1"-->
+            <!--android:contentDescription="@null"-->
+            <!--/>-->
+    <!--</RelativeLayout>-->
     <ImageView
         android:id="@+id/header_image"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="20dp"
         android:src="@drawable/header_image"
         android:contentDescription="@null"
         />

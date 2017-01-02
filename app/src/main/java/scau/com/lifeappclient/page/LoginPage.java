@@ -87,6 +87,8 @@ public class LoginPage extends ToolBarPage implements TextView.OnEditorActionLis
             public void success(Token result) {
                 ShareUtils.putUserId(result.getUserId());
                 ShareUtils.putUserToken(result.getUserToken());
+                hide(true);
+                getContext().finish();
             }
         },Token.class);
     }

@@ -12,8 +12,10 @@ import android.widget.ImageView;
 
 import com.google.gson.reflect.TypeToken;
 
+import net.neevek.android.lib.paginize.InnerPage;
 import net.neevek.android.lib.paginize.Page;
 import net.neevek.android.lib.paginize.PageActivity;
+import net.neevek.android.lib.paginize.ViewWrapper;
 import net.neevek.android.lib.paginize.annotation.InjectView;
 import net.neevek.android.lib.paginize.annotation.PageLayout;
 
@@ -34,7 +36,7 @@ import scau.com.lifeappclient.utils.ToaskUtils;
  * Created by beyondboy on 2016/10/18.
  */
 @PageLayout(R.layout.requst_listdata_page)
-public class ClubPage extends Page  implements SwipeRefreshLayout.OnRefreshListener,View.OnClickListener{
+public class ClubPage extends InnerPage implements SwipeRefreshLayout.OnRefreshListener,View.OnClickListener{
     private static final String TAG = ClubPage.class.getName();
     private int pageStart =0;
     private int pageEnd =5;
@@ -50,8 +52,8 @@ public class ClubPage extends Page  implements SwipeRefreshLayout.OnRefreshListe
     @InjectView(R.id.progress)
     private LoadingView mLoadingView;
     private boolean isLoading=false;
-    public ClubPage(PageActivity pageActivity) {
-        super(pageActivity);
+    public ClubPage(ViewWrapper innerPageContainer) {
+        super(innerPageContainer);
     }
 
     @Override

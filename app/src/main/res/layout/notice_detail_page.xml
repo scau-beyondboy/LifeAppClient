@@ -7,12 +7,13 @@
     <TextView
         android:id="@+id/notice_title"
         android:gravity="center"
-        android:textSize="25sp"
+        android:textSize="20sp"
         tools:text="haha"
         android:textColor="@android:color/black"
         android:layout_width="match_parent"
-        android:layout_height="50dp" />
+        android:layout_height="wrap_content"  />
     <TextView
+        android:layout_marginTop="10dp"
         android:id="@+id/notice_desc"
         android:textColor="@android:color/black"
         android:scrollbars="vertical"

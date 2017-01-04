@@ -42,7 +42,7 @@ public class ScauTelListItemAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             final ScauTelViewHolder scauTelViewHolder = (ScauTelViewHolder) holder;
             final TelInfo telInfo = mTelInfoList.get(position);
             scauTelViewHolder.mTelDescView.setText(telInfo.getmTelDesc());
-            scauTelViewHolder.mLogoView.setImageURI(Uri.parse("res///" + telInfo.getmTelLogo()));
+            scauTelViewHolder.mLogoView.setImageURI(Uri.parse("res:///" + telInfo.getmTelLogo()));
             scauTelViewHolder.mTelView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

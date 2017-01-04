@@ -45,13 +45,13 @@ public class ScauTelPage extends ToolBarPage {
 
     private List<TelInfo> loadData(){
         final List<TelInfo> telInfoList=new ArrayList<>();
-        telInfoList.add(new TelInfo(R.drawable.ambulance,"校内报警电话",85280110));
-        telInfoList.add(new TelInfo(R.drawable.ambulance,"校医院急救电话",85280349));
+        telInfoList.add(new TelInfo(R.drawable.notice6,"校内报警电话",85280110));
+        telInfoList.add(new TelInfo(R.drawable.notice1,"校医院急救电话",85280349));
         telInfoList.add(new TelInfo(R.drawable.ambulance,"校医院救护车",85283712));
-        telInfoList.add(new TelInfo(R.drawable.ambulance,"校园卡挂失",85283712));
-        telInfoList.add(new TelInfo(R.drawable.ambulance,"校内报警电话",85280110));
-        telInfoList.add(new TelInfo(R.drawable.ambulance,"校内报警电话",85280110));
-        telInfoList.add(new TelInfo(R.drawable.ambulance,"校内报警电话",85280110));
+        telInfoList.add(new TelInfo(R.drawable.notice2,"校园卡挂失",85283712));
+        telInfoList.add(new TelInfo(R.drawable.notice3,"校内报警电话",85280110));
+        telInfoList.add(new TelInfo(R.drawable.notice4,"校内报警电话",85280110));
+        telInfoList.add(new TelInfo(R.drawable.notice5,"校内报警电话",85280110));
         return telInfoList;
     }
 }

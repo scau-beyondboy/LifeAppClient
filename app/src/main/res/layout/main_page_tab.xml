@@ -32,7 +32,7 @@
         android:id="@+id/layout_tab_container"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@android:color/holo_green_light"
+        android:background="@android:color/darker_gray"
         android:layout_gravity="bottom"
         app:tabTextAppearance="@style/TextAppearance.PaginizeDemo.Tab"
         app:tabPadding="4dp"

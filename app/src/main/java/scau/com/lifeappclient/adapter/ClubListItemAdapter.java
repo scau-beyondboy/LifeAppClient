@@ -68,14 +68,16 @@ public class ClubListItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if(holder instanceof ItemViewHolder){
             ItemViewHolder itemViewHolder=(ItemViewHolder)holder;
             final ClubInfo clubInfo=mClubInfoList.get(position);
-            OkHttpNetWorkUtil.displaySimpleImage(itemViewHolder.clubLogo,"https://static.pexels.com/photos/127677/pexels-photo-127677-large.jpeg");
+            //OkHttpNetWorkUtil.displaySimpleImage(itemViewHolder.clubLogo,"https://static.pexels.com/photos/127677/pexels-photo-127677-large.jpeg");
+            OkHttpNetWorkUtil.displaySimpleImage(itemViewHolder.clubLogo,clubInfo.getClubLogo());
             itemViewHolder.clubName.setText(clubInfo.getClubName());
             itemViewHolder.clubDesc.setText(clubInfo.getClubDesc());
             itemViewHolder.clubWexXinNum.setText(clubInfo.getClubWeixinNum());
             itemViewHolder.clubHeader.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new ClubWebSitePage((PageActivity) v.getContext()).onShown("http://su.scau.edu.cn/").show(true);
+                   // new ClubWebSitePage((PageActivity) v.getContext()).onShown("http://su.scau.edu.cn/").show(true);
+                    new ClubWebSitePage((PageActivity) v.getContext()).onShown(clubInfo.getClubWebsite()).show(true);
                 }
             });
         }   else if(holder instanceof FootViewHolder){

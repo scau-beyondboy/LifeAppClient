@@ -20,8 +20,8 @@ import scau.com.lifeappclient.model.TelInfo;
 /**
  * Created by beyondboy on 2016/10/19.
  */
-@PageLayout(R.layout.scau_tel_page)
-//@InsertPageLayout(value = R.layout.scau_tel_page,parent = R.id.container)
+//@PageLayout(R.layout.scau_tel_page)
+@InsertPageLayout(value = R.layout.scau_tel_page,parent = R.id.container)
 public class ScauTelPage extends ToolBarPage {
     @InjectView(R.id.recy_list)
     private RecyclerView mRecyTelList;

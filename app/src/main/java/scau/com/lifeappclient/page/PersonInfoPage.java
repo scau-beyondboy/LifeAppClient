@@ -61,29 +61,55 @@ public class PersonInfoPage extends InnerPage implements View.OnClickListener{
     public void onClick(View v) {
         String text="";
         String modify="";
+        int code=0;
         switch (v.getId()){
             case R.id.num_layout:
                 text="学号";
-                modify=String.valueOf(userDetail.getUserNum());
+                if(userDetail.getUserNum()==null||userDetail.getUserNum()==0){
+                    modify="未填写";
+                }else {
+                    modify=String.valueOf(userDetail.getUserNum());
+                }
+                code=0;
                 break;
             case R.id.email_layout:
                 text="学校";
-                modify=String.valueOf("华南农业大学");
+                if(userDetail.getUserIden()==null||userDetail.getUserIden()==0){
+                    modify="未填写";
+                }else {
+                    modify=String.valueOf("华南农业大学");
+                }
+                code=1;
                 break;
             case R.id.birthday_layout:
                 text="专业";
-                modify=String.valueOf(userDetail.getUserMajor());
+                if(userDetail.getUserMajor()==null||StringUtils.isEmpty(userDetail.getUserMajor())){
+                    modify="未填写";
+                }else {
+                    modify=String.valueOf(userDetail.getUserMajor());
+                }
+                code=2;
                 break;
             case R.id.sex_layout:
                 text="年级";
-                modify=String.valueOf(userDetail.getUserGradle());
+                if(userDetail.getUserGradle()==null||StringUtils.isEmpty(userDetail.getUserGradle())){
+                    modify="未填写";
+                }else {
+                    modify=String.valueOf(userDetail.getUserGradle());
+                }
+                code=3;
                 break;
             case R.id.address_layout:
                 text="班级";
-                modify=String.valueOf(userDetail.getUserClass());
+                if(userDetail.getUserClass()==null||StringUtils.isEmpty(userDetail.getUserClass())){
+                    modify="未填写";
+                }else {
+                    modify=String.valueOf(userDetail.getUserClass());
+                }
+                code=4;
                 break;
         }
-        new ChangePersonInfoPage(getContext()).onShow(text,modify).show();
+        new ChangePersonInfoPage(getContext()).onShow(text,modify,userDetail,code).show();
     }
 
     private void init(){
@@ -101,15 +127,20 @@ public class PersonInfoPage extends InnerPage implements View.OnClickListener{
     public void getData(){
         final String userId=ShareUtils.getUserId()+"";
         ArrayMap<String,String> params=new ArrayMap<>();
-        params.put(ParamConstants.USERID,"1");
+        params.put(ParamConstants.USERID,userId);
         //Log.i(TAG,"开始>>>>>>>>>>注册");
         NetWorkHandlerUtils.postAsynHandler(NetWorkConstants.USER_INFO, params,"获取用户信息成功","获取用户信息失败",new NetWorkHandlerUtils.PostSuccessCallback<UserDetail>() {
             @Override
             public void success(UserDetail result) {
                 if(result==null)return;
                 PersonInfoPage.this.userDetail=result;
-                numTxView.setText(result.getUserNum()+"");
-                shcoolTxView.setText("华南农业大学");
+               // numTxView.setText(result.getUserNum()+"");
+                if(result.getUserIden()!=null&&result.getUserIden()==1){
+                    shcoolTxView.setText("华南农业大学");
+                }
+                if(result.getUserNum()!=null){
+                    setText(numTxView,String.valueOf(result.getUserNum()));
+                }
                 setText(majorTxView,result.getUserMajor());
                 setText(gradeTxView,result.getUserGradle());
                 setText(classTxView,result.getUserClass());
@@ -120,6 +151,8 @@ public class PersonInfoPage extends InnerPage implements View.OnClickListener{
     private void setText(TextView view,String text){
         if(!StringUtils.isEmpty(text)){
             view.setText(text);
+        }else {
+            view.setText("未填写");
         }
     }
 

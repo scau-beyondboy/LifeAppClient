@@ -27,22 +27,25 @@ public class TagPage extends ContainerPage {
     private TextView title;
     @InjectView(R.id.toobar_layout)
     private View view;
+    @InjectView(R.id.left_back)
+    private View backView;
 //    @InjectView(R.id.tb_header_bar)
 //    private Toolbar mTbHeaderBar;
     private InnerPage[] mTabPageArray;
     @InjectView(R.id.layout_tab_container)
     private TabLayout mLayoutTabContainer;
-
+    private String titles[]=new String[]{"学校辅助信息","社团信息","公告信息","个人信息"};
     public TagPage(PageActivity pageActivity) {
         super(pageActivity);
-        title.setText("首页");
+        backView.setVisibility(View.INVISIBLE);
+        title.setText("学校辅助信息");
         view.setBackgroundColor(Color.LTGRAY);
         setupInnerPages();
     }
 
     private void setupInnerPages() {
         mTabPageArray = new InnerPage[] {
-              new ClubPage(this),new ClubPage(this),new NoticePage(this),new PersonInfoPage(this)
+              new GridViewPage(this),new ClubPage(this),new NoticePage(this),new PersonInfoPage(this)
         };
 
         mLayoutTabContainer.addTab(mLayoutTabContainer.newTab().setText("学校辅助信息").setIcon(R.drawable.tab1));
@@ -51,6 +54,7 @@ public class TagPage extends ContainerPage {
         mLayoutTabContainer.addTab(mLayoutTabContainer.newTab().setText("个人信息").setIcon(R.drawable.tab4));
         mLayoutTabContainer.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             public void onTabSelected(TabLayout.Tab tab) {
+                title.setText(titles[tab.getPosition()]);
                 setInnerPage(mTabPageArray[tab.getPosition()]);
             }
             public void onTabUnselected(TabLayout.Tab tab) { }

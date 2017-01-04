@@ -7,6 +7,7 @@ import android.widget.EditText;
 import net.neevek.android.lib.paginize.Page;
 import net.neevek.android.lib.paginize.PageActivity;
 import net.neevek.android.lib.paginize.annotation.InjectView;
+import net.neevek.android.lib.paginize.annotation.InsertPageLayout;
 import net.neevek.android.lib.paginize.annotation.PageLayout;
 
 import java.text.SimpleDateFormat;
@@ -23,8 +24,9 @@ import scau.com.lifeappclient.utils.ToaskUtils;
 /**
  * Created by beyondboy on 2017/1/2.
  */
-@PageLayout(R.layout.pickup_info)
-public class PickUpInfoPage extends Page implements View.OnClickListener {
+//@PageLayout(R.layout.pickup_info)
+@InsertPageLayout(value = R.layout.pickup_info,parent = R.id.container)
+public class PickUpInfoPage extends ToolBarPage implements View.OnClickListener {
     private static final SimpleDateFormat dateform=new SimpleDateFormat("yyyy-MM-dd");
     @InjectView(R.id.pickup_desc)
     private EditText pickupDesc;
@@ -36,6 +38,7 @@ public class PickUpInfoPage extends Page implements View.OnClickListener {
     private Button submmit;
     public PickUpInfoPage(PageActivity pageActivity) {
         super(pageActivity);
+        setTitleText("拾物信息");
     }
 
     @Override
@@ -46,6 +49,7 @@ public class PickUpInfoPage extends Page implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        super.onClick(v);
         switch (v.getId()){
             case R.id.submmit:
                 handlerDone();

@@ -1,5 +1,6 @@
 package scau.com.lifeappclient.page;
 
+import android.content.Intent;
 import android.support.v4.util.ArrayMap;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -15,6 +16,7 @@ import net.neevek.android.lib.paginize.annotation.InjectView;
 import net.neevek.android.lib.paginize.annotation.InsertPageLayout;
 import net.neevek.android.lib.paginize.annotation.PageLayout;
 
+import scau.com.lifeappclient.MainActivity;
 import scau.com.lifeappclient.R;
 import scau.com.lifeappclient.constants.NetWorkConstants;
 import scau.com.lifeappclient.constants.PageCode;
@@ -89,6 +91,9 @@ public class LoginPage extends ToolBarPage implements TextView.OnEditorActionLis
                 ShareUtils.putUserToken(result.getUserToken());
                 hide(true);
                 getContext().finish();
+                final Intent intent=new Intent(getContext(), MainActivity.class);
+                intent.putExtra("showTagPage",true);
+                getContext().startActivity(intent);
             }
         },Token.class);
     }

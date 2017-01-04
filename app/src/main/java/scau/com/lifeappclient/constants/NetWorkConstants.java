@@ -14,4 +14,5 @@ public class NetWorkConstants {
     public static final String GET_CLUB_TOTAL =HOST+"/club/getTotal";
     public static final String GET_NOTICE_TOTAL =HOST+"/notice/getTotal";
     public static final String ADD_PICKUP_INFO=HOST+"/pickup/add";
+    public static final String UPDATE_INFO=HOST+"/user/update";
 }

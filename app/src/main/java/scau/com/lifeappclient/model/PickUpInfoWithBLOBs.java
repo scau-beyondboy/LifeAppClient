@@ -2,11 +2,13 @@ package scau.com.lifeappclient.model;
 
 import java.io.Serializable;
 
+import scau.com.lifeappclient.adapter.NoticeListItemAdapter;
+
 public class PickUpInfoWithBLOBs extends PickUpInfo implements Serializable {
     private String pickupImage;
 
     private String pickupDesc;
-
+    private int type= NoticeListItemAdapter.VIEW_TYPE_ITEM;
     private static final long serialVersionUID = 1L;
 
     public String getPickupImage() {
@@ -23,6 +25,14 @@ public class PickUpInfoWithBLOBs extends PickUpInfo implements Serializable {
 
     public void setPickupDesc(String pickupDesc) {
         this.pickupDesc = pickupDesc == null ? null : pickupDesc.trim();
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     @Override

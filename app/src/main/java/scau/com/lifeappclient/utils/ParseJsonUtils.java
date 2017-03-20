@@ -26,7 +26,7 @@ public class ParseJsonUtils
       String data=gson.toJson(responseObject.getData());
       if(responseObject.getCode()==NetWorkConstants.SUCCESS_CODE&&successMessage!=null)
       {
-          ToaskUtils.displayToast(successMessage);
+//          ToaskUtils.displayToast(successMessage);
       }
       else if(responseObject.getCode()==NetWorkConstants.SUCCESS_CODE)
       {
@@ -43,7 +43,7 @@ public class ParseJsonUtils
         Gson gson=new Gson();
         String data=gson.toJson(responseObject.getData());
         if(!StringUtils.isEmpty(responseObject.getMsg())){
-            ToaskUtils.showToast(responseObject.getMsg());
+//            ToaskUtils.showToast(responseObject.getMsg());
         }
         if(responseObject.getCode()== NetWorkConstants.SUCCESS_CODE)
         {
@@ -66,7 +66,7 @@ public class ParseJsonUtils
         Gson gson=new Gson();
         String data=gson.toJson(responseObject.getData());
         if(!StringUtils.isEmpty(responseObject.getMsg())&&isShowMsg){
-            ToaskUtils.showToast(responseObject.getMsg());
+//            ToaskUtils.showToast(responseObject.getMsg());
         }
         if(responseObject.getCode()== NetWorkConstants.SUCCESS_CODE)
         {

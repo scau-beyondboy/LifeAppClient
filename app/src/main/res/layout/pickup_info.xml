@@ -40,7 +40,6 @@
                     android:layout_height="wrap_content" />
                 <EditText
                     android:id="@+id/card_num_et"
-                    android:inputType="number"
                     android:layout_toRightOf="@id/card_num_tx"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />

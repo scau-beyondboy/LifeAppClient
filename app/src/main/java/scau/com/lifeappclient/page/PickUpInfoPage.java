@@ -38,7 +38,7 @@ public class PickUpInfoPage extends ToolBarPage implements View.OnClickListener 
     private Button submmit;
     public PickUpInfoPage(PageActivity pageActivity) {
         super(pageActivity);
-        setTitleText("拾物信息");
+        setTitleText("失物描述");
     }
 
     @Override
@@ -69,7 +69,8 @@ public class PickUpInfoPage extends ToolBarPage implements View.OnClickListener 
         PickUpInfoWithBLOBs pickUpInfoWithBLOBs=new PickUpInfoWithBLOBs();
         pickUpInfoWithBLOBs.setPickupDesc(desc);
         pickUpInfoWithBLOBs.setPickupPhone(phone);
-        pickUpInfoWithBLOBs.setPickupCardNum(Long.valueOf(cardNum));
+        pickUpInfoWithBLOBs.setPickupCardNum(Long.valueOf("2014243242"));
+        pickUpInfoWithBLOBs.setPickupImage(cardNum);
         pickUpInfoWithBLOBs.setPickupDate(dateform.format(new Date()));
         //Log.i(TAG,"开始>>>>>>>>>>注册");
         NetWorkHandlerUtils.postAsynHandler(NetWorkConstants.ADD_PICKUP_INFO,pickUpInfoWithBLOBs,new NetWorkHandlerUtils.PostSuccessCallback<Object>() {

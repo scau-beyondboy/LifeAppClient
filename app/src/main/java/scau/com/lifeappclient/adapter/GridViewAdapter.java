@@ -17,8 +17,8 @@ import scau.com.lifeappclient.R;
  */
 public class GridViewAdapter extends BaseAdapter {
     private int[] imageId=new int[]{R.drawable.grid1,R.drawable.grid2,
-    R.drawable.grid3,R.drawable.grid5,R.drawable.grid4};
-    private String[] strId=new String[]{"地图","拾物信息","学校电话","成绩查询","待添加"};
+    R.drawable.grid3,R.drawable.grid5,R.drawable.notice_logo,R.drawable.grid4};
+    private String[] strId=new String[]{"地图","拾物信息","学校电话","成绩查询","失物公告","待添加"};
     @Override
     public int getCount() {
         return imageId.length;

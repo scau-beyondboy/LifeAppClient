@@ -104,7 +104,7 @@ public class ParseJsonUtils
         Gson gson=new Gson();
         String data=gson.toJson(responseObject.getData());
         if(!StringUtils.isEmpty(responseObject.getMsg())&&isShowMsg){
-            ToaskUtils.showToast(responseObject.getMsg());
+            //ToaskUtils.showToast(responseObject.getMsg());
         }
         if(responseObject.getCode()==NetWorkConstants.SUCCESS_CODE)
         {

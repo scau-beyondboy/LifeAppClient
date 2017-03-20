@@ -20,7 +20,7 @@ import scau.com.lifeappclient.adapter.GridViewAdapter;
 @PageLayout(R.layout.grid_layout)
 public class GridViewPage  extends InnerPage{
     private Page[] gridItemPage=new Page[]{new ScauMapPage(getContext()),new PickUpInfoPage(getContext())
-    ,new ScauTelPage(getContext())};
+    ,new ScauTelPage(getContext()),new ScroePage(getContext()).onShown("file:///android_asset/goal/index.html")};
     @InjectView(R.id.gridView)
     private GridView gridView;
     public GridViewPage(ViewWrapper innerPageContainer) {

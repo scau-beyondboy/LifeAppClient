@@ -1,5 +1,6 @@
 package scau.com.lifeappclient.page;
 
+import android.util.Log;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -18,6 +19,7 @@ import scau.com.lifeappclient.utils.ToaskUtils;
  */
 @PageLayout(R.layout.club_website_page)
 public class ClubWebSitePage extends Page {
+    private static final String TAG = ClubWebSitePage.class.getName();
     @InjectView(R.id.webview)
     private WebView mWebView;
     @InjectView(R.id.progress)
@@ -47,6 +49,7 @@ public class ClubWebSitePage extends Page {
                 if(mProgress.isShown()){
                     mProgress.stop();
                 }
+                Log.d(TAG, "onPageFinished: >>>>>>>>>>>>>"+mProgress.isShown());
             }
 
             @Override
@@ -58,7 +61,7 @@ public class ClubWebSitePage extends Page {
             }
         });
         mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.loadUrl(url);
         mProgress.start();
+        mWebView.loadUrl(url);
     }
 }

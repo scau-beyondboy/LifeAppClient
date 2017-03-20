@@ -1,6 +1,8 @@
 package scau.com.lifeappclient.page;
 
 import android.os.Build;
+import android.util.Log;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -8,6 +10,7 @@ import android.webkit.WebViewClient;
 import net.neevek.android.lib.paginize.Page;
 import net.neevek.android.lib.paginize.PageActivity;
 import net.neevek.android.lib.paginize.annotation.InjectView;
+import net.neevek.android.lib.paginize.annotation.InsertPageLayout;
 import net.neevek.android.lib.paginize.annotation.PageLayout;
 
 import java.lang.reflect.Method;
@@ -19,8 +22,9 @@ import scau.com.lifeappclient.utils.ToaskUtils;
 /**
  * Created by beyondboy on 2017/3/20.
  */
-@PageLayout(R.layout.club_website_page)
-public class ScroePage extends Page {
+@InsertPageLayout(value = R.layout.club_website_page,parent = R.id.container)
+public class ScroePage extends ToolBarPage {
+    private static final String TAG = ScroePage.class.getName();
     @InjectView(R.id.webview)
     private WebView mWebView;
     @InjectView(R.id.progress)
@@ -29,6 +33,8 @@ public class ScroePage extends Page {
 
     public ScroePage(PageActivity pageActivity) {
         super(pageActivity);
+        setTitleText("查询成绩");
+        mProgress.setVisibility(View.GONE);
     }
 
     public ScroePage onShown(String data) {
@@ -60,6 +66,7 @@ public class ScroePage extends Page {
                     if (mProgress.isShown()) {
                         mProgress.stop();
                     }
+                    Log.d(TAG, "onPageFinished: >>>>>>>>>>>>>"+mProgress.isShown());
                 }
 
                 @Override
@@ -76,8 +83,8 @@ public class ScroePage extends Page {
             // 开启 DOM storage API 功能
             mWebView.getSettings().setDomStorageEnabled(true);
             mWebView.getSettings().setAllowFileAccess(true);
+           // mProgress.start();
             mWebView.loadUrl(url);
-            mProgress.start();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -11,4 +11,15 @@
         android:layout_alignParentTop="true"
         android:layout_width="80dp"
         android:layout_height="80dp"/>
+    <TextView
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        tools:text="hahah"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:layout_below="@id/grid_image"
+        android:layout_marginTop="8dp"
+        android:id="@+id/grid_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </RelativeLayout>

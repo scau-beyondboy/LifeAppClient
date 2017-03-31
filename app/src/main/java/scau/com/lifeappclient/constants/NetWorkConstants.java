@@ -5,7 +5,7 @@ package scau.com.lifeappclient.constants;
  */
 public class NetWorkConstants {
     public static final int SUCCESS_CODE=200;
-    public static final String HOST="http://192.168.191.1:8080";
+    public static final String HOST="http://xuguoli.51vip.biz/LifeAppService";
     public static final String USER_REGISTER=HOST+"/user/register";
     public static final String USER_LOGIN=HOST+"/user/login";
     public static final String GET_CLUB_INFO=HOST+"/club/getList";
